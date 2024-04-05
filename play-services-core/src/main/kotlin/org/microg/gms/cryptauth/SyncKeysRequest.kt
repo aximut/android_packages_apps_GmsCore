@@ -42,6 +42,7 @@ private const val AFTER_REQUEST_DELAY = 500L
 
 suspend fun request(context: Context, account: Account): JSONObject? = request(context, account.name)
 suspend fun request(context: Context, accountName: String): JSONObject? {
+    Log.d(TAG, "STARTING GRPC REQUEST")
 
     val lastCheckinInfo = LastCheckinInfo.read(context)
 
@@ -56,11 +57,15 @@ suspend fun request(context: Context, accountName: String): JSONObject? {
         .extraParam("X-subtype", GCM_REGISTER_SUBTYPE)
         .extraParam("scope", GCM_REGISTER_SCOPE)
     ).let {
+        Log.d(TAG, "STARTING GRPC REQUEST PHASE 1")
         if (!it.containsKey(GcmConstants.EXTRA_REGISTRATION_ID)) {
+            Log.d(TAG, "STARTING GRPC REQUEST PHASE 2")
             return null
         }
+        Log.d(TAG, "STARTING GRPC REQUEST PHASE 3")
         it.getString(GcmConstants.EXTRA_REGISTRATION_ID)!!
     }
+    Log.d(TAG, "STARTING GRPC REQUEST PHASE 4")
     val instanceId = instanceToken.split(':')[0]
 
     // CryptAuth sync request tells server whether or not screenlock is enabled
@@ -100,6 +105,7 @@ suspend fun request(context: Context, accountName: String): JSONObject? {
     )
         .encodeByteString()
         .base64Url()
+    Log.d(TAG, "STARTING GRPC REQUEST PHASE 5")
 
     val jsonBody = jsonObjectOf(
         "applicationName" to Constants.GMS_PACKAGE_NAME,
@@ -115,8 +121,10 @@ suspend fun request(context: Context, accountName: String): JSONObject? {
         ),
         "clientAppMetadata" to clientAppMetadata,
     )
+    Log.d(TAG, "STARTING GRPC REQUEST PHASE 6")
 
     return withContext(Dispatchers.IO) {
+        Log.d(TAG, "STARTING GRPC REQUEST PHASE 7")
         val connection = (URL(SYNC_KEY_URL).openConnection() as HttpURLConnection).apply {
             setRequestMethod("POST")
             setDoInput(true)
