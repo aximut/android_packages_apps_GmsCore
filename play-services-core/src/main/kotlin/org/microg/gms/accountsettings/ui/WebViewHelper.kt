@@ -102,9 +102,10 @@ class WebViewHelper(private val activity: AppCompatActivity, private val webView
 
     private suspend fun openWebWithAccount(accountName: String, url: String?) {
         try {
+            Log.d(TAG, "REQUESTING GRPC AUTH FOR $accountName")
             request(activity, accountName)
 
-            val service = "weblogin:continue=" + URLEncoder.encode(url, "utf-8")
+            /*val service = "weblogin:continue=" + URLEncoder.encode(url, "utf-8")
             val authManager = AuthManager(activity, accountName, GMS_PACKAGE_NAME, service)
             val authUrl = authManager.requestAuth(false)?.auth
             if (authUrl?.contains("WILL_NOT_SIGN_IN") == true) {
@@ -113,7 +114,7 @@ class WebViewHelper(private val activity: AppCompatActivity, private val webView
             Log.d(TAG, "Opening $authUrl")
             webView.post {
                 loadWebViewUrl(authUrl)
-            }
+            }*/
         } catch (e: Exception) {
             Log.w(TAG, "Failed to get weblogin auth.", e)
             activity.finish()
