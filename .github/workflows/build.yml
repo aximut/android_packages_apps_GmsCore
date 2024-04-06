@@ -50,4 +50,4 @@ jobs:
         with:
           name: all-build-artifacts
           path: |
-            play-services-core/build/outputs
+            play-services-core/build/outputs/apk/mapboxDefault
