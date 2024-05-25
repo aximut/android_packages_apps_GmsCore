@@ -21,7 +21,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: "Gradle Wrapper validation"
-        uses: gradle/actions/wrapper-validation@v3
+        uses: gradle/wrapper-validation-action@v2
       - name: "Setup Gradle"
         uses: gradle/actions/setup-gradle@v3
       - name: "Setup matchers"
@@ -45,3 +45,9 @@ jobs:
         run: "./gradlew --no-daemon assemble"
       - name: "Execute Gradle check"
         run: "./gradlew --no-daemon check"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-build-artifacts
+          path: |
+            play-services-core/build/outputs/apk/mapboxDefault
