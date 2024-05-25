@@ -49,3 +49,9 @@ jobs:
         run: "./gradlew assemble"
       - name: "Execute Gradle check"
         run: "./gradlew check"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-build-artifacts
+          path: |
+            play-services-core/build/outputs/apk/mapboxDefault
